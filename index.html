@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Beauty Space</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #ffffff;
+      color: #2d3748;
+    }
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background-color: #fff;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .logo img {
+      height: 40px;
+    }
+    nav a {
+      margin-left: 20px;
+      text-decoration: none;
+      color: #4a5568;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: color 0.3s ease;
+    }
+    nav a:hover,
+    nav a.active {
+      color: #000;
+      border-bottom: 2px solid #000;
+    }
+
+    section {
+      padding: 4rem 2rem;
+    }
+
+    .hero {
+      background-image: url('https://grim-irk.ru/upload/iblock/cc5/tgpwcef0jw9dg2aas3hejyvegsur4yeb/grim_station_table_mirror_stol_led_lite_light_12.jpg ');
+      background-size: cover;
+      background-position: center;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      text-align: center;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-color: rgba(0,0,0,0.5);
+      z-index: 0;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero h1 {
+      font-size: 3rem;
+      font-weight: bold;
+      margin-bottom: 1rem;
+    }
+
+    .hero p {
+      font-size: 1.25rem;
+      max-width: 600px;
+      margin: 0 auto 2rem;
+    }
+
+    .hero .buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      justify-content: center;
+    }
+
+    .hero button {
+      padding: 1rem 2rem;
+      border: none;
+      border-radius: 9999px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .btn-primary {
+      background-color: #000;
+      color: #fff;
+    }
+
+    .btn-secondary {
+      background-color: #fff;
+      color: #000;
+    }
+
+    .grid-section {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+    }
+
+    .card {
+      background-color: #fff;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease;
+      cursor: pointer;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+    }
+
+    .card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 0.5rem;
+    }
+
+    .card h3 {
+      font-size: 1.25rem;
+      margin-top: 0.5rem;
+    }
+
+    .card p {
+      font-size: 0.95rem;
+      color: #4a5568;
+    }
+
+    .price {
+      font-weight: bold;
+      margin-top: 0.5rem;
+    }
+
+    footer {
+      background-color: #000;
+      color: #fff;
+      text-align: center;
+      padding: 2rem 1rem;
+    }
+
+    .contact-form input,
+    .contact-form textarea {
+      width: 100%;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 0.5rem;
+    }
+
+    @media (min-width: 768px) {
+      .flex-contact {
+        display: flex;
+        gap: 2rem;
+      }
+      .flex-contact > div {
+        flex: 1;
+      }
+    }
+
+    /* Modal */
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0,0,0,0.7);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    .modal.active {
+      display: flex;
+    }
+
+    .modal-content {
+      background-color: #fff;
+      padding: 2rem;
+      border-radius: 0.5rem;
+      max-width: 700px;
+      width: 90%;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    .modal-content h2 {
+      margin-top: 0;
+    }
+
+    .close-btn {
+      float: right;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 1.5rem;
+      color: #000;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <img src="https://cdn.qwenlm.ai/output/02df5ff0-6506-43ff-b8de-2efffc1206b0/t2i/2bfa5665-ff43-407b-a965-34e246ca5891/6737c9bd-862c-4a0c-8dde-eeda9075362d.png?key=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyZXNvdXJjZV91c2VyX2lkIjoiMDJkZjVmZjAtNjUwNi00M2ZmLWI4ZGUtMmVmZmZjMTIwNmIwIiwicmVzb3VyY2VfaWQiOiI2NzM3YzliZC04NjJjLTRhMGMtOGRkZS1lZWRhOTA3NTM2MmQiLCJyZXNvdXJjZV9jaGF0X2lkIjpudWxsfQ.EjHkpqBze37XxkcOV888ogdawAKsRZgdZBc7UR5v3qI " alt="Logo">
+    <span><strong>Beauty Space</strong></span>
+  </div>
+  <nav>
+    <a href="#home" class="active">Главная</a>
+    <a href="#services-client">Услуги для клиентов</a>
+    <a href="#services-master">Услуги для мастеров</a>
+    <a href="#news">Новости</a>
+    <a href="#articles">Статьи</a>
+    <a href="#promotions">Акции</a>
+    <a href="#about">О нас</a>
+    <a href="#contacts">Контакты</a>
+  </nav>
+</header>
+
+<section id="home" class="hero">
+  <div class="hero-content">
+    <h1>Beauty Space</h1>
+    <p>Пространство красоты, творчества и профессионализма для вас и ваших клиентов.</p>
+    <div class="buttons">
+      <button class="btn-primary" onclick="openModal('appointment')">Запись на процедуру</button>
+      <button class="btn-secondary" onclick="openModal('tour')">Экскурсия по помещению</button>
+    </div>
+  </div>
+</section>
+
+<!-- Услуги для клиентов -->
+<section id="services-client">
+  <h2 style="text-align:center; font-size:2rem; font-weight:bold; margin-bottom:2rem;">Услуги для клиентов</h2>
+  <div class="grid-section">
+    <div class="card" onclick="openModal('service1')">
+      <img src="https://n1st.ru/cache/cian/2359011850_1200_800_p.jpg " alt="Маникюр и педикюр">
+      <h3>Маникюр и педикюр</h3>
+      <p>Профессиональный уход за руками и ногами. Выбор дизайна, покрытия и дополнительных услуг.</p>
+      <p class="price">от 1500 ₽</p>
+    </div>
+    <div class="card" onclick="openModal('service2')">
+      <img src="https://avatars.mds.yandex.net/get-altay/6221595/2a00000180a4507641eaca8b7db6b1cc7c98/XXL_height " alt="Парикмахерские услуги">
+      <h3>Парикмахерские услуги</h3>
+      <p>Стрижки, окрашивание, укладки от квалифицированных мастеров с индивидуальным подходом.</p>
+      <p class="price">от 2000 ₽</p>
+    </div>
+    <div class="card" onclick="openModal('service3')">
+      <img src="https://avatars.mds.yandex.net/get-altay/6249106/2a00000182af1759e91d986c8f9c74a2ce0d/XXXL " alt="Макияж и визаж">
+      <h3>Макияж и визаж</h3>
+      <p>Создание дневного, вечернего или свадебного макияжа под ваш образ и стиль.</p>
+      <p class="price">от 2500 ₽</p>
+    </div>
+  </div>
+</section>
+
+<!-- Услуги для мастеров -->
+<section id="services-master" style="background-color:#f9fafb;">
+  <h2 style="text-align:center; font-size:2rem; font-weight:bold; margin-bottom:2rem;">Услуги для мастеров</h2>
+  <div class="grid-section">
+    <div class="card">
+      <img src="https://i.pinimg.com/736x/bc/38/e0/bc38e05b8b34ec7090626e802340891d.jpg " alt="Аренда рабочего места">
+      <h3>Аренда рабочего места</h3>
+      <p>Уютные кабинки с полным набором необходимой техники и материалов для работы мастера.</p>
+      <p class="price">от 500 ₽/час</p>
+    </div>
+    <div class="card">
+      <img src="https://i.pinimg.com/736x/b3/1e/d3/b31ed347b2acf7708809df8fa7747b7f.jpg " alt="Долгосрочная аренда">
+      <h3>Долгосрочная аренда</h3>
+      <p>Возможность арендовать постоянное место на длительный срок с выгодными условиями.</p>
+      <p class="price">от 25 000 ₽/месяц</p>
+    </div>
+    <div class="card">
+      <img src="https://i.pinimg.com/736x/db/95/aa/db95aa9be2d19958ffd3b43e527eb9f2.jpg " alt="Обучение">
+      <h3>Обучение и повышение квалификации</h3>
+      <p>Регулярные тренинги и мастер-классы от экспертов beauty-индустрии для развития ваших навыков.</p>
+      <p class="price">от 7000 ₽</p>
+    </div>
+  </div>
+</section>
+
+<!-- Новости -->
+<section id="news">
+  <h2 style="text-align:center; font-size:2rem; font-weight:bold; margin-bottom:2rem;">Новости</h2>
+  <div class="grid-section">
+    <div class="card" onclick="openModal('news1')">
+      <h3>Открытие Beauty Space в Новосибирске!</h3>
+      <p>Мы рады сообщить о запуске нового бьюти-коворкинга Beauty Space! Теперь вы можете не только получать качественные услуги красоты...</p>
+    </div>
+    <div class="card" onclick="openModal('news2')">
+      <h3>Новые партнеры и расширение возможностей</h3>
+      <p>Beauty Space пополнился новыми талантливыми мастерами и проводит регулярные мероприятия по развитию профессий в сфере красоты...</p>
+    </div>
+  </div>
+</section>
+
+<!-- Статьи -->
+<section id="articles" style="background-color:#f9fafb;">
+  <h2 style="text-align:center; font-size:2rem; font-weight:bold; margin-bottom:2rem;">Статьи</h2>
+  <div class="grid-section">
+    <div class="card" onclick="openModal('article1')">
+      <h3>Почему стоит выбрать коворкинг для мастеров красоты?</h3>
+      <p>Коворкинг — это больше чем просто рабочее пространство. Это сообщество единомышленников, удобные условия, доступ к ресурсам и возможность расти как профессионалу...</p>
+    </div>
+  </div>
+</section>
+
+<!-- Акции -->
+<section id="promotions">
+  <h2 style="text-align:center; font-size:2rem; font-weight:bold; margin-bottom:2rem;">Акции</h2>
+  <div style="max-width: 800px; margin: 0 auto; background-color:#fff; padding:2rem; border-radius:0.5rem; box-shadow:0 2px 6px rgba(0,0,0,0.1);">
+    <h3>Первый визит бесплатно!</h3>
+    <p>Запишитесь на любую процедуру до конца месяца и получите скидку 50% на первый визит. Активируйте предложение при записи через наш сайт или по телефону.</p>
+  </div>
+</section>
+
+<!-- О нас -->
+<section id="about" style="background-color:#f9fafb;">
+  <h2 style="text-align:center; font-size:2rem; font-weight:bold; margin-bottom:2rem;">О нас</h2>
+  <div style="max-width: 800px; margin: 0 auto; text-align:center;">
+    <p style="font-size:1.25rem;">
+      Beauty Space — это уникальное пространство, созданное для людей, ценящих красоту, комфорт и профессионализм. Мы объединяем в себе элементы салона красоты, коворкинга и обучающего центра, чтобы каждый мог найти здесь то, что ему нужно.
+    </p>
+    <p style="font-size:1.25rem; margin-top:1.5rem;">
+      Для клиентов — это доступ к лучшим специалистам в области маникюра, парикмахерского искусства, визажа и многого другого. Для мастеров — это возможность работать в современном и функциональном пространстве, совершенствовать свои навыки и строить карьеру.
+    </p>
+  </div>
+</section>
+
+<!-- Контакты -->
+<section id="contacts">
+  <h2 style="text-align:center; font-size:2rem; font-weight:bold; margin-bottom:2rem;">Контакты</h2>
+  <div class="flex-contact">
+    <div>
+      <p><strong>Адрес:</strong> г. Новосибирск, ул. Ватутина, д. 45/1</p>
+      <p><strong>Телефон:</strong> 8 (901) 208-21-52</p>
+      <iframe 
+        src="https://yandex.ru/map-widget/v1/?um=constructor%3A1a6f4e4d4c5e4d4f5e4d4c5e4d4f5e4d4c5e4d4f5e4d4c5e4d4f5e4d4f5e4d&source=constructor " 
+        width="100%" height="400" frameborder="0"></iframe>
+    </div>
+    <div>
+      <form class="contact-form">
+        <h3>Свяжитесь с нами</h3>
+        <input type="text" placeholder="Имя" required />
+        <input type="email" placeholder="Email" required />
+        <textarea rows="5" placeholder="Сообщение" required></textarea>
+        <button type="submit" class="btn-primary">Отправить</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>© 2025 Beauty Space. Все права защищены.</p>
+</footer>
+
+<!-- Модальные окна -->
+
+<div class="modal" id="appointment">
+  <div class="modal-content">
+    <span class="close-btn" onclick="closeModal()">×</span>
+    <h2>Запись на процедуру</h2>
+    <form>
+      <label for="name">Имя:</label>
+      <input type="text" id="name" name="name" placeholder="Введите ваше имя" required />
+
+      <label for="phone">Телефон:</label>
+      <input type="tel" id="phone" name="phone" placeholder="+7 (XXX) XXX-XX-XX" required />
+
+      <label for="service">Выберите услугу:</label>
+      <select id="service" name="service" required>
+        <option value="">Выберите услугу</option>
+        <option value="manicure">Маникюр и педикюр</option>
+        <option value="haircut">Парикмахерские услуги</option>
+        <option value="makeup">Макияж и визаж</option>
+      </select>
+
+      <label for="date">Дата и время:</label>
+      <input type="datetime-local" id="date" name="date" required />
+
+      <button type="submit">Записаться</button>
+    </form>
+  </div>
+</div>
+
+<div class="modal" id="tour">
+  <div class="modal-content">
+    <span class="close-btn" onclick="closeModal()">×</span>
+    <h2>Запись на экскурсию</h2>
+    <form>
+      <label for="name_tour">Имя:</label>
+      <input type="text" id="name_tour" name="name_tour" placeholder="Введите ваше имя" required />
+
+      <label for="phone_tour">Телефон:</label>
+      <input type="tel" id="phone_tour" name="phone_tour" placeholder="+7 (XXX) XXX-XX-XX" required />
+
+      <label for="date_tour">Дата и время:</label>
+      <input type="datetime-local" id="date_tour" name="date_tour" required />
+
+      <button type="submit">Записаться на экскурсию</button>
+    </form>
+  </div>
+</div>
+
+<!-- Полноценные статьи и новости -->
+<div class="modal" id="news1">
+  <div class="modal-content">
+    <span class="close-btn" onclick="closeModal()">×</span>
+    <h2>Открытие Beauty Space в Новосибирске!</h2>
+    <p>Мы рады сообщить о запуске нового бьюти-коворкинга Beauty Space! Теперь вы можете не только получать качественные услуги красоты, но и работать в профессиональной среде с идеальными условиями. Наши клиенты получают доступ к широкому спектру услуг от проверенных мастеров, а сами мастера могут арендовать удобное рабочее место, развивать своё мастерство и строить карьеру в одном месте.</p>
+  </div>
+</div>
+
+<div class="modal" id="news2">
+  <div class="modal-content">
+    <span class="close-btn" onclick="closeModal()">×</span>
+    <h2>Новые партнеры и расширение возможностей</h2>
+    <p>Beauty Space активно развивается и расширяет возможности для своих клиентов и партнёров. Мы начали сотрудничество с новыми талантливыми мастерами, организуем регулярные тренинги и мастер-классы, а также внедряем новые форматы работы, чтобы сделать наше пространство максимально удобным и вдохновляющим.</p>
+  </div>
+</div>
+
+<div class="modal" id="article1">
+  <div class="modal-content">
+    <span class="close-btn" onclick="closeModal()">×</span>
+    <h2>Почему стоит выбрать коворкинг для мастеров красоты?</h2>
+    <p>Коворкинг — это больше чем просто рабочее пространство. Это сообщество единомышленников, удобные условия, доступ к ресурсам и возможность расти как профессионалу. В Beauty Space мы создали идеальные условия для мастеров индустрии красоты: современные кабинки, оборудование, зоны отдыха и возможности для обучения и продвижения. Присоединяйтесь к нашему комьюнити и развивайтесь вместе с нами!</p>
+  </div>
+</div>
+
+<script>
+  function openModal(id) {
+    document.getElementById(id).classList.add('active');
+  }
+
+  function closeModal() {
+    document.querySelectorAll('.modal').forEach(modal => modal.classList.remove('active'));
+  }
+</script>
+
+</body>
+</html>
